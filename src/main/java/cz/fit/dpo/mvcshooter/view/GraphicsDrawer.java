@@ -1,6 +1,7 @@
 package cz.fit.dpo.mvcshooter.view;
 
 import cz.fit.dpo.mvcshooter.model.ModelInfo;
+import cz.fit.dpo.mvcshooter.model.Visitor;
 import cz.fit.dpo.mvcshooter.model.entities.Cannon;
 import cz.fit.dpo.mvcshooter.model.entities.Collision;
 import cz.fit.dpo.mvcshooter.model.entities.Enemy;
@@ -15,7 +16,8 @@ import javax.imageio.ImageIO;
  *
  * @author Ondrej Stuchlik
  */
-public class GraphicsDrawer {
+public class GraphicsDrawer implements Visitor
+{
     private static final int INFO_X = 5;
     private static final int INFO_Y = 15;
     
@@ -24,6 +26,8 @@ public class GraphicsDrawer {
     private BufferedImage enemyImage2;
     private BufferedImage missileImage;
     private BufferedImage collisionImage;
+
+    private Graphics g;
  
 
     public GraphicsDrawer() {
@@ -37,8 +41,34 @@ public class GraphicsDrawer {
             ex.printStackTrace(System.err);
         }
     }
-        
-    
+
+    @Override
+    public void visit(Enemy enemy)
+    {
+        Image usedImage = enemy.getType() == 0 ? enemyImage1 : enemyImage2;
+        g.drawImage(usedImage,
+                enemy.getX() - enemyImage1.getWidth()/2,
+                enemy.getY() - enemyImage1.getHeight()/2, null);
+    }
+
+    @Override
+    public void visit(Cannon enemy)
+    {
+
+    }
+
+    @Override
+    public void visit(Missile enemy)
+    {
+
+    }
+
+    @Override
+    public void visit(Collision enemy)
+    {
+
+    }
+
     public void drawCannon(Graphics g, Cannon cannon) {
         g.drawImage(cannonImage, 
               cannon.getX() - cannonImage.getWidth()/2, 
@@ -72,5 +102,7 @@ public class GraphicsDrawer {
               + ", Score: " + info.score,
               INFO_X, INFO_Y);
     }
+
+
 
 }
