@@ -1,16 +1,15 @@
 package cz.fit.dpo.mvcshooter.view;
 
-import cz.fit.dpo.mvcshooter.model.ModelInfo;
 import cz.fit.dpo.mvcshooter.model.Visitor;
 import cz.fit.dpo.mvcshooter.model.entities.Cannon;
 import cz.fit.dpo.mvcshooter.model.entities.Collision;
 import cz.fit.dpo.mvcshooter.model.entities.Enemy;
 import cz.fit.dpo.mvcshooter.model.entities.Missile;
-import java.awt.Graphics;
-import java.awt.Image;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -60,49 +59,17 @@ public class GraphicsDrawer implements Visitor
     }
 
     @Override
-    public void visit(Missile enemy)
-    {
-
+    public void visit(Missile missile) {
+        g.drawImage(missileImage,
+            missile.getX(),
+            missile.getY(), null);
     }
 
     @Override
-    public void visit(Collision enemy)
-    {
-
-    }
-
-    public void drawCannon(Graphics g, Cannon cannon) {
-        g.drawImage(cannonImage, 
-              cannon.getX() - cannonImage.getWidth()/2, 
-              cannon.getY() - cannonImage.getHeight()/2, null);
-    }
-    
-    public void drawMissile(Graphics g, Missile missile) {
-        g.drawImage(missileImage, 
-              missile.getX() - missileImage.getWidth()/2, 
-              missile.getY() - missileImage.getHeight()/2, null);
-    }
-    
-    public void drawEnemy(Graphics g, Enemy enemy) {
-        Image usedImage = enemy.getType() == 0 ? enemyImage1 : enemyImage2;
-        g.drawImage(usedImage, 
-              enemy.getX() - enemyImage1.getWidth()/2, 
-              enemy.getY() - enemyImage1.getHeight()/2, null);
-    }
-    
-    public void drawCollision(Graphics g, Collision collision) {        
-        g.drawImage(collisionImage, 
-              collision.getX() - collisionImage.getWidth()/2, 
-              collision.getY() - collisionImage.getHeight()/2, null);
-    }
-    
-    public void drawInfo(Graphics g, ModelInfo info) {
-        g.drawString(
-              "Force: " + info.cannonForce 
-              + ", Angle: " + info.cannonAngle 
-              + ", Gravity: " + info.gravity
-              + ", Score: " + info.score,
-              INFO_X, INFO_Y);
+    public void visit(Collision collision) {
+        g.drawImage(collisionImage,
+            collision.getX(),
+            collision.getY(), null);
     }
 
     public void setGraphics(Graphics graphics) {

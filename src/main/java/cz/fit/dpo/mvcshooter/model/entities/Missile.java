@@ -13,8 +13,6 @@ public class Missile extends TimedGameObject {
     private int beginX;
     private int beginY;
     private int angle;
-    private long time;
-
     private MovementStrategy movementStrategy;
 
     public Missile(int x, int y, int velocity, int angle) {
@@ -23,7 +21,7 @@ public class Missile extends TimedGameObject {
         this.angle = angle;
         this.beginX = x;
         this.beginY = y;
-        this.time = System.currentTimeMillis();
+        this.time = 1;
     }
 
     public void move(int gravity) {
@@ -55,14 +53,6 @@ public class Missile extends TimedGameObject {
 
     public int getBeginY() {
         return beginY;
-    }
-
-    public long getTime() {
-        return time;
-    }
-
-    public void setTime(long time) {
-        this.time = time;
     }
 
     public int getAngle() {
