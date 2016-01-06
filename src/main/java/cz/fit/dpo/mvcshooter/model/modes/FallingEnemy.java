@@ -15,7 +15,7 @@ public class FallingEnemy extends Enemy {
     @Override
     public void move() {
         time++;
-        y = 0 + time;
+        y = time;
     }
 
     @Override

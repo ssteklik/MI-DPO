@@ -9,15 +9,15 @@ import cz.fit.dpo.mvcshooter.model.movement.MovementStrategy;
  */
 public class Missile extends TimedGameObject {
 
-    private int velocity;
     private int beginX;
     private int beginY;
     private int angle;
+    private int force;
     private MovementStrategy movementStrategy;
 
-    public Missile(int x, int y, int velocity, int angle) {
+    public Missile(int x, int y, int angle, int force) {
         super(x, y);
-        this.velocity = velocity;
+        this.force = force;
         this.angle = angle;
         this.beginX = x;
         this.beginY = y;
@@ -36,7 +36,7 @@ public class Missile extends TimedGameObject {
     }
 
     public Missile copy() {
-        Missile missile = new Missile(beginX, beginY, angle, velocity);
+        Missile missile = new Missile(beginX, beginY, angle, force);
         missile.setTime(time);
         missile.setMovementStrategy(movementStrategy);
         return missile;
@@ -59,8 +59,8 @@ public class Missile extends TimedGameObject {
         return angle;
     }
 
-    public int getVelocity() {
-        return velocity;
+    public int getForce() {
+        return force;
     }
 
     public void setMovementStrategy(MovementStrategy movementStrategy) {
