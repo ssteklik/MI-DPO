@@ -1,6 +1,8 @@
 package cz.fit.dpo.mvcshooter.model.entities;
 
 import cz.fit.dpo.mvcshooter.model.ModelConfig;
+import cz.fit.dpo.mvcshooter.model.Visitor;
+
 import java.util.Random;
 
 /**
@@ -23,6 +25,12 @@ public class Enemy extends TimedGameObject {
 
     public int getType() {
         return type;
+    }
+
+    @Override
+    public void accept(Visitor visitor)
+    {
+        visitor.visit(this);
     }
     
 }

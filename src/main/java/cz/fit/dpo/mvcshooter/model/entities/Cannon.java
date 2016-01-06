@@ -1,6 +1,7 @@
 package cz.fit.dpo.mvcshooter.model.entities;
 
 import cz.fit.dpo.mvcshooter.model.ModelConfig;
+import cz.fit.dpo.mvcshooter.model.Visitor;
 
 /**
  *
@@ -61,5 +62,11 @@ public class Cannon extends GameObject {
     
     public Missile shoot() {
         return new Missile(x, y, force, angle);
+    }
+
+    @Override
+    public void accept(Visitor visitor)
+    {
+        visitor.visit(this);
     }
 }

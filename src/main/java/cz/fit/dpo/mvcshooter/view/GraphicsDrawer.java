@@ -52,9 +52,11 @@ public class GraphicsDrawer implements Visitor
     }
 
     @Override
-    public void visit(Cannon enemy)
+    public void visit(Cannon cannon)
     {
-
+        g.drawImage(cannonImage,
+                cannon.getX() - cannonImage.getWidth() / 2,
+                cannon.getY(), null);
     }
 
     @Override
@@ -103,6 +105,8 @@ public class GraphicsDrawer implements Visitor
               INFO_X, INFO_Y);
     }
 
-
+    public void setGraphics(Graphics graphics) {
+        this.g = graphics;
+    }
 
 }

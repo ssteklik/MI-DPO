@@ -1,6 +1,7 @@
 package cz.fit.dpo.mvcshooter.model.entities;
 
 import cz.fit.dpo.mvcshooter.model.ModelConfig;
+import cz.fit.dpo.mvcshooter.model.Visitor;
 
 /**
  *
@@ -34,6 +35,12 @@ public class Missile extends GameObject {
         x = (int) (beginX + (beginVelocity * time * Math.cos(beginAngleInRad)));
         y = (int) (beginY - (beginVelocity * time * Math.sin(beginAngleInRad))
               + (0.5 * gravity * Math.pow(time,2)));
+    }
+
+    @Override
+    public void accept(Visitor visitor)
+    {
+        visitor.visit(this);
     }
 
 }

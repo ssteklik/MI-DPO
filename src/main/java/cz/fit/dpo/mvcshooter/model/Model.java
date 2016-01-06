@@ -1,9 +1,6 @@
 package cz.fit.dpo.mvcshooter.model;
 
-import cz.fit.dpo.mvcshooter.model.entities.Cannon;
-import cz.fit.dpo.mvcshooter.model.entities.Collision;
-import cz.fit.dpo.mvcshooter.model.entities.Enemy;
-import cz.fit.dpo.mvcshooter.model.entities.Missile;
+import cz.fit.dpo.mvcshooter.model.entities.*;
 import cz.fit.dpo.mvcshooter.view.Canvas;
 
 import java.util.ArrayList;
@@ -33,6 +30,7 @@ public class Model {
 
 
     public Model() {
+        cannon = new Cannon();
         initTimer();
     }
     
@@ -109,7 +107,35 @@ public class Model {
 
 
     // ################################## private logic ##################################
-    
 
+
+    public List<Missile> getMissiles()
+    {
+        return missiles;
+    }
+
+    public List<Enemy> getEnemies()
+    {
+        return enemies;
+    }
+
+    public List<Collision> getCollisions()
+    {
+        return collisions;
+    }
+
+    public Cannon getCannon()
+    {
+        return cannon;
+    }
+
+    public List<GameObject> getAll() {
+        List<GameObject> gameObjects = new ArrayList<GameObject>();
+        gameObjects.add(cannon);
+        gameObjects.addAll(getCollisions());
+        gameObjects.addAll(getMissiles());
+        gameObjects.addAll(getEnemies());
+        return gameObjects;
+    }
 
 }
