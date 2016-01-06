@@ -2,12 +2,11 @@ package cz.fit.dpo.mvcshooter.view;
 
 import cz.fit.dpo.mvcshooter.controller.Controller;
 import cz.fit.dpo.mvcshooter.model.Model;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,6 +25,7 @@ public class MainWindow extends JFrame {
             this.setTitle("MyShooter");
             this.setResizable(false);
 
+          //ToDo prejmenovat
             Dimension obrazovka = Toolkit.getDefaultToolkit().getScreenSize();
             this.setLocation(
                   (int) (obrazovka.getWidth() / 2 - 250),
@@ -44,7 +44,8 @@ public class MainWindow extends JFrame {
             ex.printStackTrace(System.err);
         }
     }
-    
+
+  //ToDo upravit na neco vlastniho - Shobull ma cestky delsi vypis
     public void showHelp() {
         JOptionPane.showMessageDialog(this, 
               "Controls: \n"
