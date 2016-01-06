@@ -2,6 +2,9 @@ package cz.fit.dpo.mvcshooter.model.entities;
 
 import cz.fit.dpo.mvcshooter.model.ModelConfig;
 import cz.fit.dpo.mvcshooter.model.Visitor;
+import cz.fit.dpo.mvcshooter.model.modes.Mode;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -69,4 +72,26 @@ public class Cannon extends GameObject {
     {
         visitor.visit(this);
     }
+
+
+    public ArrayList<Missile> shootMissile(Mode gameMode) {
+        ArrayList<Missile> missiles = new ArrayList<Missile>();
+
+        // Vytvareni strel na zaklade vzoru AbstractFactory
+        Missile missile = gameMode.createMissile(getX(), getY(), getAngle(), getForce());
+        missiles.add(missile);
+
+        return missiles;
+//        return this.shootingState.shootMissile(this, gameMode);
+    }
+
+//    public void changeShootingMode() {
+//        if (ECannonMode.SINGLE_SHOOTING_MODE.equals(mode)) {
+//            this.mode = ECannonMode.DOUBLE_SHOOTING_MODE;
+//            this.shootingState = new DoubleShootingState();
+//        } else {
+//            this.mode = ECannonMode.SINGLE_SHOOTING_MODE;
+//            this.shootingState = new SingleShootingState();
+//        }
+//    }
 }
