@@ -15,7 +15,8 @@ public class Model {
     private List<Collision> collisions = new ArrayList<Collision>();
     private Cannon cannon;
     private Timer timer;
-    private int gravity;
+    private int gravity = ModelConfig.DEFAULT_GRAVITY;
+    ;
     private List<ModelObserver> observers = new ArrayList<ModelObserver>();
     private Mode gameMode;
     private int timeTicks = 0;
@@ -68,8 +69,8 @@ public class Model {
         if (enemies.size() == ModelConfig.ENEMIES_COUNT) {
             return;
         }
-        generatedX = (int) (Math.random() * (ModelConfig.PLAYGROUND_WIDTH - 100)) + 100;
-        generatedY = (int) (Math.random() * (ModelConfig.PLAYGROUND_HEIGHT - 100)) + 100;
+        generatedX = (int) (Math.random() * (ModelConfig.PLAYGROUND_WIDTH - 120)) + 100;
+        generatedY = (int) (Math.random() * (ModelConfig.PLAYGROUND_HEIGHT - 40)) + 20;
         Enemy enemy = gameMode.createEnemy(generatedX, generatedY);
         enemies.add(enemy);
         notifyObservers();
@@ -77,11 +78,52 @@ public class Model {
 
     private void moveObjects() {
         refreshMissiles();
-//        refreshEnemies();
-//        refreshCollisions();
-//        checkCollisions();
+        refreshEnemies();
+        refreshCollisions();
+        checkCollisions();
 
         notifyObservers();
+    }
+
+    private void checkCollisions() {
+        for (Iterator<Enemy> enemyIter = enemies.iterator(); enemyIter.hasNext(); ) {
+            Enemy enemy = enemyIter.next();
+            for (Iterator<Missile> missileIter = missiles.iterator(); missileIter.hasNext(); ) {
+                Missile missile = missileIter.next();
+                if (missile.collidesWith(enemy)) {
+                    collisions.add(new Collision(enemy.getX(), enemy.getY()));
+                    //ToDO score board
+//                    gameStats.addScore();
+                    enemyIter.remove();
+                    missileIter.remove();
+                }
+            }
+        }
+    }
+
+    private void refreshCollisions() {
+        for (Iterator<Collision> colIter = collisions.iterator(); colIter.hasNext(); ) {
+            Collision collision = colIter.next();
+            collision.decreaseRemainingTime();
+            if (!collision.isVisible()) {
+                colIter.remove();
+            }
+        }
+    }
+
+    private void refreshEnemies() {
+        boolean removed = false;
+        for (Iterator<Enemy> it = enemies.iterator(); it.hasNext(); ) {
+            Enemy enemy = it.next();
+            enemy.move();
+            if (!enemy.isVisible()) {
+                it.remove();
+                removed = true;
+            }
+        }
+        if (removed) {
+            addNewEnemy();
+        }
     }
 
 
@@ -89,10 +131,11 @@ public class Model {
         for (Iterator<Missile> it = missiles.iterator(); it.hasNext(); ) {
             Missile missile = it.next();
             missile.move(gravity);
-//            if (!missile.isVisible()) {
+            if (!missile.isVisible()) {
+                //ToDO score board
 //                gameStats.minusScore();
-//                it.remove();
-//            }
+                it.remove();
+            }
         }
     }
 

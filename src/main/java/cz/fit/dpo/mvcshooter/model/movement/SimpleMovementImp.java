@@ -10,7 +10,7 @@ public class SimpleMovementImp implements MovementStrategy {
 
     @Override
     public Coordinates move(int g, Missile m) {
-        int force = (m.getVelocity() / 4) == 0 ? 1 : (m.getVelocity() / 4);
+        int force = (m.getForce() / 4) == 0 ? 1 : (m.getForce() / 4);
         int x = m.getBeginX() + (int) (force * m.getTime());
         int y = m.getBeginY() - (int) (force * m.getTime() * Math.toRadians(m.getAngle()));
         return new Coordinates(x, y);
