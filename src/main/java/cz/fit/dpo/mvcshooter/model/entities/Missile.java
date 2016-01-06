@@ -2,45 +2,78 @@ package cz.fit.dpo.mvcshooter.model.entities;
 
 import cz.fit.dpo.mvcshooter.model.ModelConfig;
 import cz.fit.dpo.mvcshooter.model.Visitor;
+import cz.fit.dpo.mvcshooter.model.movement.MovementStrategy;
 
 /**
- *
  * @author Ondrej Stuchlik
  */
 public class Missile extends GameObject {
-    private static double DEGREE_TO_RAD_MULTIPLIER = (2 * Math.PI) / 360;
-    private int beginVelocity;
-    private double beginAngleInRad;
+
+    private int velocity;
     private int beginX;
     private int beginY;
-    private long beginTime;
+    private int angle;
+    private long time;
+
+    private MovementStrategy movementStrategy;
 
     public Missile(int x, int y, int velocity, int angle) {
         super(x, y);
-        this.beginVelocity = velocity;
-        this.beginAngleInRad = angle * DEGREE_TO_RAD_MULTIPLIER;
+        this.velocity = velocity;
+        this.angle = angle;
         this.beginX = x;
         this.beginY = y;
-        this.beginTime = System.currentTimeMillis();
-    }
-
-    public boolean shouldBeDiscarted() {
-        // don't discard based on y coord, it can still fall down
-        return x > ModelConfig.PLAYGROUND_WIDTH;
+        this.time = System.currentTimeMillis();
     }
 
     public void move(int gravity) {
-        double time = (new Long(System.currentTimeMillis() - beginTime)).doubleValue();
-        time /= 100;
-        x = (int) (beginX + (beginVelocity * time * Math.cos(beginAngleInRad)));
-        y = (int) (beginY - (beginVelocity * time * Math.sin(beginAngleInRad))
-              + (0.5 * gravity * Math.pow(time,2)));
+        time++;
+        Coordinates coord = movementStrategy.move(gravity, this);
+        this.x = coord.getX();
+        this.y = coord.getY();
+    }
+
+    public boolean isVisible() {
+        return y <= ModelConfig.PLAYGROUND_HEIGHT && x <= ModelConfig.PLAYGROUND_WIDTH;
+    }
+
+    public Missile copy() {
+        Missile missile = new Missile(beginX, beginY, angle, velocity);
+        missile.setTime(time);
+        missile.setMovementStrategy(movementStrategy);
+        return missile;
     }
 
     @Override
-    public void accept(Visitor visitor)
-    {
+    public void accept(Visitor visitor) {
         visitor.visit(this);
     }
 
+    public int getBeginX() {
+        return beginX;
+    }
+
+    public int getBeginY() {
+        return beginY;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public int getAngle() {
+        return angle;
+    }
+
+    public int getVelocity() {
+        return velocity;
+    }
+
+    public void setMovementStrategy(MovementStrategy movementStrategy) {
+        this.movementStrategy = movementStrategy;
+    }
 }
