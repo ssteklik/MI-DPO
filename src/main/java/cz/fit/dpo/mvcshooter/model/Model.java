@@ -3,32 +3,22 @@ package cz.fit.dpo.mvcshooter.model;
 import cz.fit.dpo.mvcshooter.model.entities.*;
 import cz.fit.dpo.mvcshooter.model.modes.Mode;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
- *
  * @author Ondrej Stuchlik
  */
 public class Model {
 
     private List<Missile> missiles = new ArrayList<Missile>();
-
     private List<Enemy> enemies = new ArrayList<Enemy>();
-
     private List<Collision> collisions = new ArrayList<Collision>();
-
     private Cannon cannon;
-
     private Timer timer;
-
     private int gravity;
-
     private List<ModelObserver> observers = new ArrayList<ModelObserver>();
-
     private Mode gameMode;
+    private int timeTicks = 0;
 
 
     public Model(Mode mode) {
@@ -36,7 +26,7 @@ public class Model {
         cannon = new Cannon();
         initTimer();
     }
-    
+
     // TODO implement
 
     public int getPlaygroundWidth() {
@@ -53,82 +43,115 @@ public class Model {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                // TODO implement
+                moveObjects();
             }
-    }, 0, ModelConfig.TICK_TIME);
+        }, 0, ModelConfig.TICK_TIME);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                addNewEnemy();
+            }
+        }, 0, 5000);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                timeTicks++;
+            }
+        }, 0, 1000);
     }
 
-    public void moveCannonDown()
-    {
+    private void addNewEnemy() {
+        int generatedX, generatedY;
+
+        if (enemies.size() == ModelConfig.ENEMIES_COUNT) {
+            return;
+        }
+        generatedX = (int) (Math.random() * (ModelConfig.PLAYGROUND_WIDTH - 100)) + 100;
+        generatedY = (int) (Math.random() * (ModelConfig.PLAYGROUND_HEIGHT - 100)) + 100;
+        Enemy enemy = gameMode.createEnemy(generatedX, generatedY);
+        enemies.add(enemy);
+        notifyObservers();
+    }
+
+    private void moveObjects() {
+        refreshMissiles();
+//        refreshEnemies();
+//        refreshCollisions();
+//        checkCollisions();
+
+        notifyObservers();
+    }
+
+
+    private void refreshMissiles() {
+        for (Iterator<Missile> it = missiles.iterator(); it.hasNext(); ) {
+            Missile missile = it.next();
+            missile.move(gravity);
+//            if (!missile.isVisible()) {
+//                gameStats.minusScore();
+//                it.remove();
+//            }
+        }
+    }
+
+    public void moveCannonDown() {
         cannon.moveDown();
         notifyObservers();
     }
 
-    public void moveCannonUp()
-    {
+    public void moveCannonUp() {
         cannon.moveUp();
         notifyObservers();
     }
 
-    public void forceOfCannonDown()
-    {
+    public void forceOfCannonDown() {
         cannon.forceDown();
     }
 
-    public void forceOfCannonUp()
-    {
+    public void forceOfCannonUp() {
         cannon.forceUp();
     }
 
-    public void aimCannonUp()
-    {
+    public void aimCannonUp() {
         cannon.aimUp();
     }
 
-    public void aimCannonDown()
-    {
+    public void aimCannonDown() {
         cannon.aimDown();
     }
 
-    public void shootCannon()
-    {
+    public void shootCannon() {
         ArrayList<Missile> newMissiles = cannon.shootMissile(gameMode);
         missiles.addAll(newMissiles);
         notifyObservers();
     }
 
-    public void increaseGravity()
-    {
+    public void increaseGravity() {
         gravity += ModelConfig.GRAVITY_STEP;
     }
 
-    public void decreaseGravity()
-    {
+    public void decreaseGravity() {
         gravity -= ModelConfig.GRAVITY_STEP;
     }
-
-
 
     // ################################## private logic ##################################
 
 
-    public List<Missile> getMissiles()
-    {
+    public List<Missile> getMissiles() {
         return missiles;
     }
 
-    public List<Enemy> getEnemies()
-    {
+    public List<Enemy> getEnemies() {
         return enemies;
     }
 
-    public List<Collision> getCollisions()
-    {
+    public List<Collision> getCollisions() {
         return collisions;
     }
 
-    public Cannon getCannon()
-    {
+    public Cannon getCannon() {
         return cannon;
     }
 
@@ -146,8 +169,7 @@ public class Model {
         observers.add(observer);
     }
 
-    public void detach(ModelObserver observer)
-    {
+    public void detach(ModelObserver observer) {
         observers.remove(observer);
     }
 
