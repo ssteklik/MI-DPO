@@ -7,7 +7,7 @@ import cz.fit.dpo.mvcshooter.model.movement.MovementStrategy;
 /**
  * @author Ondrej Stuchlik
  */
-public class Missile extends GameObject {
+public class Missile extends TimedGameObject {
 
     private int velocity;
     private int beginX;

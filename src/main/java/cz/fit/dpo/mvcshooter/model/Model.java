@@ -1,7 +1,7 @@
 package cz.fit.dpo.mvcshooter.model;
 
 import cz.fit.dpo.mvcshooter.model.entities.*;
-import cz.fit.dpo.mvcshooter.view.Canvas;
+import cz.fit.dpo.mvcshooter.model.modes.Mode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +28,11 @@ public class Model {
 
     private List<ModelObserver> observers = new ArrayList<ModelObserver>();
 
+    private Mode gameMode;
 
-    public Model() {
+
+    public Model(Mode mode) {
+        this.gameMode = mode;
         cannon = new Cannon();
         initTimer();
     }
@@ -89,6 +92,9 @@ public class Model {
 
     public void shootCannon()
     {
+        ArrayList<Missile> newMissiles = cannon.shootMissile(gameMode);
+        missiles.addAll(newMissiles);
+        notifyObservers();
         cannon.shoot();
     }
 

@@ -8,13 +8,10 @@ public abstract class TimedGameObject extends GameObject {
     
     private long created;
 
+    protected int time = 1;
+
     public TimedGameObject(int x, int y) {
         super(x, y);
         created = System.currentTimeMillis();
     }
-    
-    protected boolean shouldBeDiscarted(int liveTime) {
-        return (System.currentTimeMillis() - created) > liveTime;
-    }
-
 }
