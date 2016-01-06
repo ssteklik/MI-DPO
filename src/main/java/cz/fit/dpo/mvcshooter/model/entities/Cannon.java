@@ -3,8 +3,12 @@ package cz.fit.dpo.mvcshooter.model.entities;
 import cz.fit.dpo.mvcshooter.model.ModelConfig;
 import cz.fit.dpo.mvcshooter.model.Visitor;
 import cz.fit.dpo.mvcshooter.model.modes.Mode;
+import cz.fit.dpo.mvcshooter.model.shooting_modes.DoubleShootingMode;
+import cz.fit.dpo.mvcshooter.model.shooting_modes.ShootingMode;
+import cz.fit.dpo.mvcshooter.model.shooting_modes.SingleShootingMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -14,6 +18,8 @@ public class Cannon extends GameObject {
     
     private int angle = ModelConfig.CANNON_DEFAULT_ANGLE;
     private int force = ModelConfig.CANNON_DEFAULT_FORCE;
+
+    private ShootingMode shootingMode = new SingleShootingMode();
 
     public Cannon() {
         super(ModelConfig.CANNON_X, ModelConfig.CANNON_DEFAULT_Y);
@@ -75,23 +81,14 @@ public class Cannon extends GameObject {
 
 
     public ArrayList<Missile> shootMissile(Mode gameMode) {
-        ArrayList<Missile> missiles = new ArrayList<Missile>();
-
-        // Vytvareni strel na zaklade vzoru AbstractFactory
-        Missile missile = gameMode.createMissile(getX(), getY(), getAngle(), getForce());
-        missiles.add(missile);
-
-        return missiles;
-//        return this.shootingState.shootMissile(this, gameMode);
+        return this.shootingMode.shoot(this, gameMode);
     }
 
-//    public void changeShootingMode() {
-//        if (ECannonMode.SINGLE_SHOOTING_MODE.equals(mode)) {
-//            this.mode = ECannonMode.DOUBLE_SHOOTING_MODE;
-//            this.shootingState = new DoubleShootingState();
-//        } else {
-//            this.mode = ECannonMode.SINGLE_SHOOTING_MODE;
-//            this.shootingState = new SingleShootingState();
-//        }
-//    }
+    public void changeShootingMode() {
+        if (shootingMode.isSingle()) {
+            this.shootingMode = new DoubleShootingMode();
+        } else {
+            this.shootingMode = new SingleShootingMode();
+        }
+    }
 }

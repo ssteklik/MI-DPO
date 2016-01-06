@@ -2,8 +2,9 @@ package cz.fit.dpo.mvcshooter.model.shooting_modes;
 
 import cz.fit.dpo.mvcshooter.model.entities.Cannon;
 import cz.fit.dpo.mvcshooter.model.entities.Missile;
+import cz.fit.dpo.mvcshooter.model.modes.Mode;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by simon on 6.1.16.
@@ -11,8 +12,18 @@ import java.util.List;
 public class SingleShootingMode implements ShootingMode
 {
     @Override
-    public List<Missile> shoot(Cannon cannon)
+    public ArrayList<Missile> shoot(Cannon cannon, Mode gameMode)
     {
-        return null; // TODO implement this
+        ArrayList<Missile> missiles = new ArrayList<Missile>();
+        Missile missile = gameMode.createMissile(cannon.getX(), cannon.getY(), cannon.getAngle(), cannon.getForce());
+        missiles.add(missile);
+
+        return missiles;
+    }
+
+    @Override
+    public boolean isSingle()
+    {
+        return true;
     }
 }

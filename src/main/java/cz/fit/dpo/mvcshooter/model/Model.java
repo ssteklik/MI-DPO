@@ -95,7 +95,6 @@ public class Model {
         ArrayList<Missile> newMissiles = cannon.shootMissile(gameMode);
         missiles.addAll(newMissiles);
         notifyObservers();
-        cannon.shoot();
     }
 
     public void increaseGravity()
@@ -156,5 +155,9 @@ public class Model {
         for (ModelObserver obs : observers) {
             obs.modelUpdated();
         }
+    }
+
+    public void toggleShootingMode() {
+        cannon.changeShootingMode();
     }
 }

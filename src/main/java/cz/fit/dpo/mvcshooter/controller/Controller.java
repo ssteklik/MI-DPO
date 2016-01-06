@@ -40,6 +40,9 @@ public class Controller {
             case KeyEvent.VK_SPACE:
                 model.shootCannon();
                 break;
+            case KeyEvent.VK_S:
+                model.toggleShootingMode();
+                break;
 
             case KeyEvent.VK_HOME:
                 model.increaseGravity();
