@@ -26,7 +26,7 @@ public class Model {
 
     private int gravity;
 
-    private List<ModelObserver> observers = new ArrayList();
+    private List<ModelObserver> observers = new ArrayList<ModelObserver>();
 
 
     public Model() {
@@ -58,11 +58,13 @@ public class Model {
     public void moveCannonDown()
     {
         cannon.moveDown();
+        notifyObservers();
     }
 
     public void moveCannonUp()
     {
         cannon.moveUp();
+        notifyObservers();
     }
 
     public void forceOfCannonDown()
@@ -100,10 +102,6 @@ public class Model {
         gravity -= ModelConfig.GRAVITY_STEP;
     }
 
-    public void registerObserver(ModelObserver observer)
-    {
-        observers.add(observer);
-    }
 
 
     // ################################## private logic ##################################
@@ -130,12 +128,27 @@ public class Model {
     }
 
     public List<GameObject> getAll() {
-        List<GameObject> gameObjects = new ArrayList<GameObject>();
-        gameObjects.add(cannon);
-        gameObjects.addAll(getCollisions());
-        gameObjects.addAll(getMissiles());
-        gameObjects.addAll(getEnemies());
-        return gameObjects;
+        List<GameObject> all = new ArrayList<GameObject>();
+        all.add(cannon);
+        all.addAll(getEnemies());
+        all.addAll(getMissiles());
+        all.addAll(getCollisions());
+
+        return all;
     }
 
+    public void attach(ModelObserver observer) {
+        observers.add(observer);
+    }
+
+    public void detach(ModelObserver observer)
+    {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (ModelObserver obs : observers) {
+            obs.modelUpdated();
+        }
+    }
 }

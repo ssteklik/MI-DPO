@@ -20,7 +20,7 @@ public class Canvas extends JPanel implements ModelObserver {
 
     public Canvas(int x, int y, int width, int height, Model model) {
         this.model = model;
-        this.model.registerObserver(this);
+        this.model.attach(this);
         this.setBackground(Color.WHITE);
         this.setDoubleBuffered(true);
         this.setLocation(x, y);

@@ -12,7 +12,7 @@ import javax.swing.SwingUtilities;
 public class Shooter {
     
     public static void main(String[] args) {
-        //ToDo jak udelat factory pro harcore a softcore verzi
+        //ToDo jak udela factory pro harcore a softcore verzi
         final Model model = new Model();
         final Controller controller = new Controller(model);
         
