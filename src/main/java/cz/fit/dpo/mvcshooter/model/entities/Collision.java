@@ -17,5 +17,11 @@ public class Collision extends TimedGameObject {
     {
         visitor.visit(this);
     }
+
+    public Collision copy() {
+        Collision collision = new Collision(x, y);
+        collision.setTime(time);
+        return collision;
+    }
     
 }

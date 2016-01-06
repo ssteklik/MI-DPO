@@ -54,9 +54,11 @@ public class Model {
             }
         }, 0, 5000);
 
-        timer.schedule(new TimerTask() {
+        timer.schedule(new TimerTask()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 timeTicks++;
             }
         }, 0, 1000);
@@ -155,6 +157,11 @@ public class Model {
         return cannon;
     }
 
+    public int getGravity()
+    {
+        return gravity;
+    }
+
     public List<GameObject> getAll() {
         List<GameObject> all = new ArrayList<GameObject>();
         all.add(cannon);
@@ -181,5 +188,26 @@ public class Model {
 
     public void toggleShootingMode() {
         cannon.changeShootingMode();
+    }
+
+    public SavedGame saveGame() {
+        return new SavedGame(this);
+    }
+
+    public void loadGame(SavedGame savedGame)
+    {
+        enemies.clear();
+        missiles.clear();
+        collisions.clear();
+        for (Enemy enemy : savedGame.getEnemies()) {
+            enemies.add(enemy.copy());
+        }
+        for (Missile missile : savedGame.getMissiles()) {
+            missiles.add(missile.copy());
+        }
+        for (Collision collision : savedGame.getCollisions()) {
+            collisions.add(collision.copy());
+        }
+        gravity = savedGame.getGravity();
     }
 }
