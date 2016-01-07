@@ -1,20 +1,18 @@
 package cz.fit.dpo.mvcshooter.view;
 
-import cz.fit.dpo.mvcshooter.model.entities.GameObject;
 import cz.fit.dpo.mvcshooter.model.Model;
 import cz.fit.dpo.mvcshooter.model.ModelObserver;
+import cz.fit.dpo.mvcshooter.model.entities.GameObject;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
-import javax.swing.JPanel;
 
 /**
- *
  * @author Ondrej Stuchlik
  */
 public class Canvas extends JPanel implements ModelObserver {
+
     GraphicsDrawer drawer = new GraphicsDrawer();
     Model model;
 
@@ -24,7 +22,7 @@ public class Canvas extends JPanel implements ModelObserver {
         this.setBackground(Color.WHITE);
         this.setDoubleBuffered(true);
         this.setLocation(x, y);
-        this.setPreferredSize(new Dimension(width,height));
+        this.setPreferredSize(new Dimension(width, height));
         this.setVisible(true);
     }
 
@@ -36,7 +34,6 @@ public class Canvas extends JPanel implements ModelObserver {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // todo implement
         drawer.setGraphics(g);
 
         List<GameObject> all = model.getAll();
@@ -44,5 +41,4 @@ public class Canvas extends JPanel implements ModelObserver {
             gameObject.accept(drawer);
         }
     }
-
 }
